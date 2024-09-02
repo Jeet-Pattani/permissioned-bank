@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interface</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">MetaMask Wallet</h1>
+        <div class="text-center mb-4">
+            <button id="connectButton" class="btn btn-primary">Connect MetaMask</button>
+        </div>
+        <div id="walletInfo" class="text-center mb-4" style="display:none;">
+            <h3>Wallet Information</h3>
+            <p><strong>Address:</strong> <span id="walletAddress"></span></p>
+            <p><strong>Balance:</strong> <span id="walletBalance"></span> POL</p>
+        </div>
+        <div class="text-center mb-4">
+            <button id="depositTokenButton" class="btn btn-success">Deposit Token</button>
+            <button id="depositNFTButton" class="btn btn-success">Deposit NFT</button>
+            <button class="btn btn-warning" id="withdrawAssetButton" data-toggle="modal" data-target="#withdrawalModal">Withdraw Asset</button>
+            <button class="btn btn-info" id="borrowAssetButton" data-toggle="modal" data-target="#borrowalModal">Borrow Asset</button>
+        </div>
+    </div>
+
+    <!-- Deposit Token Modal -->
+    <div class="modal fade" id="depositTokenModal" tabindex="-1" role="dialog" aria-labelledby="depositTokenModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositTokenModalLabel">Deposit Token</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tokenContractAddress">Token Contract Address</label>
+                        <input type="text" class="form-control" id="tokenContractAddress"
+                            placeholder="Enter contract address">
+                    </div>
+                    <div class="form-group">
+                        <label for="tokenAmount">Amount</label>
+                        <input type="number" class="form-control" id="tokenAmount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="submitDepositToken" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit NFT Modal -->
+    <div class="modal fade" id="depositNFTModal" tabindex="-1" role="dialog" aria-labelledby="depositNFTModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositNFTModalLabel">Deposit NFT</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" value="">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nftContractAddress">Deposit NFT to the following Address</label>
+                        <input type="text" class="form-control" id="nftContractAddress"
+                            value="0x17a3F2E23F0c832E8C6A874B27Cc950a7F59731F">
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="nftTokenId">Token ID</label>
+                        <input type="text" class="form-control" id="nftTokenId" placeholder="Enter token ID">
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <p>*Cannot validate NFT trnxs via ethers.js</p>
+                    <br>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+                    <!-- <button type="button" id="submitDepositNFT" class="btn btn-primary">Submit</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Asset Modal -->
+    <div class="modal fade" id="withdrawalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Withdrawal Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="withdrawalForm">
+                        <div class="form-group">
+                            <label for="assetType">Select Asset Type</label>
+                            <select class="form-control" id="assetType" required>
+                                <option value="" disabled selected>Select asset type</option>
+                                <option value="erc20">ERC-20 Token</option>
+                                <option value="nft">NFT</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none" id="erc20Fields">
+                            <label for="erc20TokenAddress">Token Address</label>
+                            <input type="text" class="form-control" id="erc20TokenAddress" placeholder="Enter ERC-20 token address">
+                            <label for="erc20Amount" class="mt-2">Amount</label>
+                            <input type="number" class="form-control" id="erc20Amount" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group d-none" id="nftFields">
+                            <label for="nftAddress">NFT Address</label>
+                            <input type="text" class="form-control" id="nftAddress" placeholder="Enter NFT address">
+                            <label for="nftTokenId" class="mt-2">Token ID</label>
+                            <input type="number" class="form-control" id="nftTokenId" placeholder="Enter NFT token ID">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Borrow Asset Modal -->
+    <div class="modal fade" id="borrowalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Borrowal Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="borrowalForm">
+                        <div class="form-group">
+                            <label for="assetTypeB">Select Asset Type</label>
+                            <select class="form-control" id="assetTypeB" required>
+                                <option value="" disabled selected>Select asset type</option>
+                                <option value="erc20">ERC-20 Token</option>
+                                <option value="nft">NFT</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none" id="erc20FieldsB">
+                            <label for="erc20TokenAddress">Token Address</label>
+                            <input type="text" class="form-control" id="erc20TokenAddressB" placeholder="Enter ERC-20 token address">
+                            <label for="erc20Amount" class="mt-2">Amount</label>
+                            <input type="number" class="form-control" id="erc20AmountB" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group d-none" id="nftFieldsB">
+                            <label for="nftAddress">NFT Address</label>
+                            <input type="text" class="form-control" id="nftAddressB" placeholder="Enter NFT address">
+                            <label for="nftTokenId" class="mt-2">Token ID</label>
+                            <input type="number" class="form-control" id="nftTokenIdB" placeholder="Enter NFT token ID">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ethers.js and Bootstrap JS -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const ERC20_ABI = [
+            "function transfer(address to, uint256 amount) public returns (bool)"
+        ];
+
+        const ERC721_ABI = [
+            "function safeTransferFrom(address from, address to, uint256 tokenId) external"
+        ];
+
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed!');
+        } else {
+            console.log('MetaMask is not installed!');
+        }
+
+        const provider1 = new ethers.providers.Web3Provider(window.ethereum);
+
+        async function connectMetaMask() {
+            try {
+                await provider1.send("eth_requestAccounts", []);
+                const signer = provider1.getSigner();
+                const address = await signer.getAddress();
+                const balance = await provider1.getBalance(address);
+
+                document.getElementById('walletAddress').textContent = address;
+                document.getElementById('walletBalance').textContent = ethers.utils.formatEther(balance);
+                document.getElementById('walletInfo').style.display = 'block';
+            } catch (error) {
+                console.error('Error connecting MetaMask:', error);
+            }
+        }
+
+        document.getElementById('connectButton').addEventListener('click', connectMetaMask);
+
+        document.getElementById('depositTokenButton').addEventListener('click', () => {
+            $('#depositTokenModal').modal('show');
+        });
+
+        document.getElementById('depositNFTButton').addEventListener('click', () => {
+            $('#depositNFTModal').modal('show');
+        });
+
+
+        document.getElementById('submitDepositToken').addEventListener('click', async () => {
+            const tokenContractAddress = document.getElementById('tokenContractAddress').value;
+            const amount = document.getElementById('tokenAmount').value;
+            const bankMngrAddress = '0x17a3F2E23F0c832E8C6A874B27Cc950a7F59731F';  // Fixed address to transfer tokens to
+
+            try {
+                const signer = provider1.getSigner();
+                const tokenContract = new ethers.Contract(tokenContractAddress, ERC20_ABI, signer);
+
+                // Transfer tokens to the fixed address
+                const tx = await tokenContract.transfer(bankMngrAddress, ethers.utils.parseUnits(amount, 18));
+                await tx.wait();
+
+                alert('Token deposited successfully!');
+            } catch (error) {
+                console.error('Error depositing token:', error);
+            }
+        });
+
+        document.getElementById('submitDepositNFT').addEventListener('click', async () => {
+            const nftContractAddress = document.getElementById('nftContractAddress').value;
+            const tokenId = document.getElementById('nftTokenId').value;
+
+            try {
+                const signer = provider1.getSigner();
+                const nftContract = new ethers.Contract(nftContractAddress, ERC721_ABI, signer);
+                // Assume 'to' is the current address of the signer
+                const tx = await nftContract.safeTransferFrom(signer.getAddress(), signer.getAddress(), tokenId);
+                await tx.wait();
+                alert('NFT deposited successfully!');
+            } catch (error) {
+                console.error('Error depositing NFT:', error);
+            }
+        });
+        
+        document.getElementById('submitBorrowAsset').addEventListener('click', async () => {
+            const borrowType = document.getElementById('borrowType').value;
+            console.log('Borrow type:', borrowType);
+
+            if (borrowType === 'erc20') {
+                const tokenAddress = document.getElementById('borrowTokenContractAddress').value;
+                const amount = document.getElementById('borrowTokenAmount').value;
+                console.log('Token address:', tokenAddress, 'Amount:', amount);
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/borrow/erc20', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ tokenAddress, amount })
+                    });
+
+                    console.log('Response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();  // Get error details from response
+                        throw new Error(errorText || 'Failed to process ERC-20 borrow request');
+                    }
+
+                    const result = await response.text();
+                    alert(result);
+                } catch (error) {
+                    console.error('Error borrowing ERC-20 token:', error);
+                    alert('Error borrowing ERC-20 token: ' + error.message);
+                }
+            } else if (borrowType === 'nft') {
+                const nftAddress = document.getElementById('borrowNFTContractAddress').value;
+                const tokenId = document.getElementById('borrowNFTTokenId').value;
+                console.log('NFT address:', nftAddress, 'Token ID:', tokenId);
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/borrow/nft', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ nftAddress, tokenId })
+                    });
+
+                    console.log('Response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();  // Get error details from response
+                        throw new Error(errorText || 'Failed to process NFT borrow request');
+                    }
+
+                    const result = await response.text();
+                    alert(result);
+                } catch (error) {
+                    console.error('Error borrowing NFT:', error);
+                    alert('Error borrowing NFT: ' + error.message);
+                }
+            }
+        });
+
+    </script>
+    <script>
+        const baseUrl = 'http://localhost:3000'
+        $(document).ready(function() {
+            $('#assetType').change(function() {
+                const assetType = $(this).val();
+                if (assetType === 'erc20') {
+                    $('#erc20Fields').removeClass('d-none');
+                    $('#nftFields').addClass('d-none');
+                } else if (assetType === 'nft') {
+                    $('#nftFields').removeClass('d-none');
+                    $('#erc20Fields').addClass('d-none');
+                } else {
+                    $('#erc20Fields').addClass('d-none');
+                    $('#nftFields').addClass('d-none');
+                }
+            });
+
+            $('#withdrawalForm').submit(function(e) {
+                e.preventDefault();
+                const assetType = $('#assetType').val();
+                let url, data;
+
+                if (assetType === 'erc20') {
+                    url = baseUrl + '/api/withdraw/erc20';
+                    data = {
+                        tokenAddress: $('#erc20TokenAddress').val(),
+                        amount: $('#erc20Amount').val()
+                    };
+                } else if (assetType === 'nft') {
+                    url = baseUrl +  '/api/withdraw/nft';
+                    data = {
+                        nftAddress: $('#nftAddress').val(),
+                        tokenId: $('#nftTokenId').val()
+                    };
+                } else {
+                    alert('Please select an asset type');
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        alert('Request successful');
+                        $('#withdrawalModal').modal('hide');
+                    },
+                    error: function(xhr) {
+                        alert('Error processing request');
+                    }
+                });
+            });
+        });
+    </script>
+
+<script>
+    $(document).ready(function() {
+        $('#assetTypeB').change(function() {
+            const assetType = $(this).val();
+            if (assetType === 'erc20') {
+                $('#erc20FieldsB').removeClass('d-none');
+                $('#nftFieldsB').addClass('d-none');
+            } else if (assetType === 'nft') {
+                $('#nftFieldsB').removeClass('d-none');
+                $('#erc20FieldsB').addClass('d-none');
+            } else {
+                $('#erc20FieldsB').addClass('d-none');
+                $('#nftFieldsB').addClass('d-none');
+            }
+        });
+
+        $('#borrowalForm').submit(function(e) {
+            e.preventDefault();
+            const assetType = $('#assetTypeB').val();
+            let url, data;
+
+            if (assetType === 'erc20') {
+                url = baseUrl + '/api/borrow/erc20';
+                data = {
+                    tokenAddress: $('#erc20TokenAddressB').val(),
+                    amount: $('#erc20AmountB').val()
+                };
+            } else if (assetType === 'nft') {
+                url = baseUrl +  '/api/withdraw/nft';
+                data = {
+                    nftAddress: $('#nftAddressB').val(),
+                    tokenId: $('#nftTokenIdB').val()
+                };
+            } else {
+                alert('Please select an asset type');
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Request successful');
+                    $('#borrowalModal').modal('hide');
+                },
+                error: function(xhr) {
+                    alert('Error processing request');
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

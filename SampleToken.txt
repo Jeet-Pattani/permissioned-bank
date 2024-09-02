@@ -1,0 +1,29 @@
+SampleToken contract address: 0x261f742c2a04beb9d88ba888a35997c889cb1a3f
+
+
+Wallet public address:
+0xb7e546E258E500566bD02F4b3D2bE7e54E40369B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+References:
+
+1. https://vitto.cc/how-to-create-and-deploy-an-erc20-token-in-20-minutes/

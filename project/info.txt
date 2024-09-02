@@ -1,0 +1,2 @@
+BankManager at Amoy Testnet: 0x17a3f2e23f0c832e8c6a874b27cc950a7f59731f
+Owned by:  0x87c6375119a4943358fb557d9e868214d55560F5
