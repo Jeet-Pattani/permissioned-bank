@@ -258,66 +258,6 @@
             }
         });
         
-        document.getElementById('submitBorrowAsset').addEventListener('click', async () => {
-            const borrowType = document.getElementById('borrowType').value;
-            console.log('Borrow type:', borrowType);
-
-            if (borrowType === 'erc20') {
-                const tokenAddress = document.getElementById('borrowTokenContractAddress').value;
-                const amount = document.getElementById('borrowTokenAmount').value;
-                console.log('Token address:', tokenAddress, 'Amount:', amount);
-
-                try {
-                    const response = await fetch('http://localhost:3000/api/borrow/erc20', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ tokenAddress, amount })
-                    });
-
-                    console.log('Response status:', response.status);
-
-                    if (!response.ok) {
-                        const errorText = await response.text();  // Get error details from response
-                        throw new Error(errorText || 'Failed to process ERC-20 borrow request');
-                    }
-
-                    const result = await response.text();
-                    alert(result);
-                } catch (error) {
-                    console.error('Error borrowing ERC-20 token:', error);
-                    alert('Error borrowing ERC-20 token: ' + error.message);
-                }
-            } else if (borrowType === 'nft') {
-                const nftAddress = document.getElementById('borrowNFTContractAddress').value;
-                const tokenId = document.getElementById('borrowNFTTokenId').value;
-                console.log('NFT address:', nftAddress, 'Token ID:', tokenId);
-
-                try {
-                    const response = await fetch('http://localhost:3000/api/borrow/nft', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ nftAddress, tokenId })
-                    });
-
-                    console.log('Response status:', response.status);
-
-                    if (!response.ok) {
-                        const errorText = await response.text();  // Get error details from response
-                        throw new Error(errorText || 'Failed to process NFT borrow request');
-                    }
-
-                    const result = await response.text();
-                    alert(result);
-                } catch (error) {
-                    console.error('Error borrowing NFT:', error);
-                    alert('Error borrowing NFT: ' + error.message);
-                }
-            }
-        });
 
     </script>
     <script>
