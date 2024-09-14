@@ -1,0 +1,18 @@
+- Create a BankManager.sol Contract deploy it to testnet/mainnet using hardhat or RemixIDE
+- save the BankManager.json (abi), the contract address, private key and public key/address of the wallet from which BankManager.sol was deployed (this wallet is owner of BankManager.sol only this can interact with the contract later on)
+-go inside api-interact. update the .env file with relevant info
+- add/update BankManager.json
+- update functions in interact.js (if required)
+- after testing interact.js modify interact-endpoints.js (allows interacting with BankManager.sol via API endpoints)
+- run interact-endpoints.js
+-run/serve index.html (provides UI to use the interact-endpoints.js APIs)
+- now open new terminal and go inside admin-panel
+- delete requests.db if starting from new
+- run server.js
+- use test.js to test before using it with frontend
+- run/serve index.html inside admin-panel to access all the requests made by the user
+-open new terminal and go inside test-project dir(this is the user module using which users can deposit/withdraw tokens and NFTs, Borrow NFTs/Tokens)
+- serve/run the index.html inside test-project dir
+- the index.html interacts with the APIs of admin panel to make requests of depositing/withdrawing/borrowing
+- the admin using the admin-panel can approve/reject the requests
+- after approving a requests the admin can make the required transaction using api-interact

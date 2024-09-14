@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Contract Interaction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- <h1>Smart Contract Interaction</h1> -->
+    <h1>BankManager Interaction</h1>
+    
+    <h3>Get Contract Owner</h3>
+    <button onclick="getOwner()">Get Owner</button>
+    <div id="ownerOutput" class="output"></div>
+    
+    <hr>
+
+    <h3>Transfer Ownership</h3>
+    <div class="form-group">
+      <label for="newOwner">New Owner Address:</label>
+      <input type="text" id="newOwner" placeholder="Enter new owner address">
+    </div>
+    <button onclick="transferOwnership()">Transfer Ownership</button>
+    <div id="transferOwnershipOutput" class="output"></div>
+    
+    <hr>
+
+    <h3>Withdraw Ether</h3>
+    <div class="form-group">
+      <label for="recipientEth">Recipient Address:</label>
+      <input type="text" id="recipientEth" placeholder="Enter recipient address">
+    </div>
+    <div class="form-group">
+      <label for="amountEth">Amount (in ETH):</label>
+      <input type="number" id="amountEth" placeholder="Enter amount in Ether">
+    </div>
+    <button onclick="withdrawEther()">Withdraw Ether</button>
+    <div id="withdrawEthOutput" class="output"></div>
+
+    <hr>
+
+    <h3>Withdraw ERC20 Tokens</h3>
+    <div class="form-group">
+      <label for="tokenAddress">Token Address:</label>
+      <input type="text" id="tokenAddress" placeholder="Enter ERC20 token address">
+    </div>
+    <div class="form-group">
+      <label for="recipientERC20">Recipient Address:</label>
+      <input type="text" id="recipientERC20" placeholder="Enter recipient address">
+    </div>
+    <div class="form-group">
+      <label for="amountERC20">Amount:</label>
+      <input type="number" id="amountERC20" placeholder="Enter amount of tokens">
+    </div>
+    <button onclick="withdrawERC20()">Withdraw ERC20 Tokens</button>
+    <div id="withdrawERC20Output" class="output"></div>
+    
+    <hr>
+
+    <h3>Renounce Ownership</h3>
+    <button onclick="renounceOwnership()">Renounce Ownership</button>
+    <div id="renounceOutput" class="output"></div>
+    
+  </div>
+
+  <script>
+    // Base URL for API calls (adjust it based on where your server is running)
+    const baseURL = 'http://localhost:3000';
+
+    // Function to fetch the owner of the contract
+    async function getOwner() {
+      try {
+        const response = await fetch(`${baseURL}/owner`);
+        const data = await response.json();
+        document.getElementById('ownerOutput').textContent = `Owner Address: ${data.owner}`;
+      } catch (error) {
+        document.getElementById('ownerOutput').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Function to transfer ownership of the contract
+    async function transferOwnership() {
+      const newOwner = document.getElementById('newOwner').value;
+      try {
+        const response = await fetch(`${baseURL}/transferOwnership`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ newOwner })
+        });
+        const data = await response.json();
+        document.getElementById('transferOwnershipOutput').textContent = data.message || `Error: ${data.error}`;
+      } catch (error) {
+        document.getElementById('transferOwnershipOutput').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Function to withdraw Ether from the contract
+    async function withdrawEther() {
+      const recipient = document.getElementById('recipientEth').value;
+      const amount = document.getElementById('amountEth').value;
+      try {
+        const response = await fetch(`${baseURL}/withdrawEther`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ recipient, amount })
+        });
+        const data = await response.json();
+        document.getElementById('withdrawEthOutput').textContent = data.message || `Error: ${data.error}`;
+      } catch (error) {
+        document.getElementById('withdrawEthOutput').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Function to withdraw ERC20 tokens from the contract
+    async function withdrawERC20() {
+      const tokenAddress = document.getElementById('tokenAddress').value;
+      const recipient = document.getElementById('recipientERC20').value;
+      const amount = document.getElementById('amountERC20').value;
+      try {
+        const response = await fetch(`${baseURL}/withdrawERC20`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ tokenAddress, recipient, amount })
+        });
+        const data = await response.json();
+        document.getElementById('withdrawERC20Output').textContent = data.message || `Error: ${data.error}`;
+      } catch (error) {
+        document.getElementById('withdrawERC20Output').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Function to renounce ownership of the contract
+    async function renounceOwnership() {
+      try {
+        const response = await fetch(`${baseURL}/renounceOwnership`, {
+          method: 'POST'
+        });
+        const data = await response.json();
+        document.getElementById('renounceOutput').textContent = data.message || `Error: ${data.error}`;
+      } catch (error) {
+        document.getElementById('renounceOutput').textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+
+</body>
+</html>
