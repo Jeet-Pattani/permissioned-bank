@@ -36,7 +36,7 @@ app.get('/owner', async (req, res) => {
     }
 });
 
-/*
+
 // API to transfer ownership (only callable by current owner)
 app.post('/transferOwnership', async (req, res) => {
     const { newOwner } = req.body;
@@ -53,7 +53,7 @@ app.post('/transferOwnership', async (req, res) => {
 app.post('/withdrawEther', async (req, res) => {
     const { recipient, amount } = req.body;
     try {
-        const etherAmount = ethers.utils.parseEther(amount.toString());
+        const etherAmount = ethers.parseUnits(amount.toString());
         const withdrawEtherTx = await bankManagerContract.withdrawEther(recipient, etherAmount);
         await withdrawEtherTx.wait();
         res.json({ message: `Withdrawn ${amount} Ether to ${recipient}` });
@@ -66,7 +66,9 @@ app.post('/withdrawEther', async (req, res) => {
 app.post('/withdrawERC20', async (req, res) => {
     const { tokenAddress, recipient, amount } = req.body;
     try {
-        const tokenAmount = ethers.utils.parseUnits(amount.toString(), 18);
+        const tokenAmount = ethers.parseUnits(amount.toString(), 18);
+        console.log(amount.toString())
+        console.log(tokenAmount)
         const withdrawERC20Tx = await bankManagerContract.withdrawERC20(tokenAddress, recipient, tokenAmount);
         await withdrawERC20Tx.wait();
         res.json({ message: `Withdrawn ${amount} ERC20 tokens to ${recipient}` });
@@ -109,9 +111,9 @@ app.post('/renounceOwnership', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-*/
+
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

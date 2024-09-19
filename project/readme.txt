@@ -1,3 +1,19 @@
+Sample Token Address = '0x261F742c2a04BEB9d88Ba888a35997c889cB1a3f'
+
+Bank Manager Address = '0x17a3f2e23f0c832e8c6a874b27cc950a7f59731f'
+
+Bank Manager Owner (Acc3)= '0xb7e546E258E500566bD02F4b3D2bE7e54E40369B'
+
+user wallet address = '0xb7e546E258E500566bD02F4b3D2bE7e54E40369B'
+
+Proof of Deposit: '0x08763fc61e15c1d980d654e51d886e9972539baeedbc5c14e51b9cfda89d7a0d'
+
+
+
+
+
+
+
 
 
 There are 3 modules

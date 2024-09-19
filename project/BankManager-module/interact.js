@@ -38,6 +38,14 @@ async function main() {
         console.log("Current owner of the contract: ", ownerAddress);
 
         // Add additional function calls here if needed.
+
+        // Example 4: Withdraw ERC20 tokens to a recipient
+        const tokenAddress = '0x261F742c2a04BEB9d88Ba888a35997c889cB1a3f'; // replace with the ERC20 token address
+        const recipient = '0xb7e546E258E500566bD02F4b3D2bE7e54E40369B'; // replace with recipient's address
+        const amount = ethers.parseUnits("100", 18); // withdraw 100 tokens (assuming 18 decimals)
+        const withdrawERC20Tx = await bankManagerContract.withdrawERC20(tokenAddress, recipient, amount);
+        await withdrawERC20Tx.wait();
+        console.log(`Withdrawn ${amount} ERC20 tokens to ${recipient}`);
         
     } catch (error) {
         console.error("Error in contract interaction:", error);

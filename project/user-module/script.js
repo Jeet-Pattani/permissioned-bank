@@ -138,9 +138,11 @@ document.getElementById('submitBorrowAsset').addEventListener('click', async () 
 });
 
 
-// withdrawz fxn using jquery
-const baseUrl = 'http://localhost:3000'
+//const baseUrl = 'http://localhost:3000';
+
+
 $(document).ready(function() {
+    // Handle the change event for asset type selection
     $('#assetType').change(function() {
         const assetType = $(this).val();
         if (assetType === 'erc20') {
@@ -155,28 +157,41 @@ $(document).ready(function() {
         }
     });
 
+    // Handle form submission
     $('#withdrawalForm').submit(function(e) {
+        // Prevent form from refreshing the page
         e.preventDefault();
+
+        // Get selected asset type and initialize variables
         const assetType = $('#assetType').val();
         let url, data;
 
+        // Prepare data based on selected asset type
         if (assetType === 'erc20') {
             url = baseUrl + '/api/withdraw/erc20';
             data = {
                 tokenAddress: $('#erc20TokenAddress').val(),
-                amount: $('#erc20Amount').val()
+                amount: $('#erc20Amount').val(),
+                trnxHash: $('#TrnxHash').val(),
+                walletAddress: $('#walletAddress').text()  // Use .val() instead of .text() if it's an input field
             };
         } else if (assetType === 'nft') {
-            url = baseUrl +  '/api/withdraw/nft';
+            url = baseUrl + '/api/withdraw/nft';
             data = {
                 nftAddress: $('#nftAddress').val(),
-                tokenId: $('#nftTokenId').val()
+                tokenId: $('#nftTokenId').val(),
+                trnxHash: $('#TrnxHash').val(),
+                walletAddress: $('#walletAddress').text()  // Use .val() instead of .text() if it's an input field
             };
         } else {
             alert('Please select an asset type');
             return;
         }
 
+        // Log data to console to verify what is being sent
+        console.log('Sending data to backend:', data);
+
+        // Send AJAX request
         $.ajax({
             url: url,
             method: 'POST',
@@ -192,6 +207,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 
 // borrow fxn using jquery
@@ -219,13 +235,15 @@ $('#borrowalForm').submit(function(e) {
         url = baseUrl + '/api/borrow/erc20';
         data = {
             tokenAddress: $('#erc20TokenAddressB').val(),
-            amount: $('#erc20AmountB').val()
+            amount: $('#erc20AmountB').val(),
+            walletAddress: $('#walletAddress').text() 
         };
     } else if (assetType === 'nft') {
         url = baseUrl +  '/api/withdraw/nft';
         data = {
             nftAddress: $('#nftAddressB').val(),
-            tokenId: $('#nftTokenIdB').val()
+            tokenId: $('#nftTokenIdB').val(),
+            walletAddress: $('#walletAddress').text()
         };
     } else {
         alert('Please select an asset type');

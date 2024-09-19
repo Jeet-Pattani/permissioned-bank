@@ -1,0 +1,10 @@
+<form id="testForm">
+    <input type="text" id="testInput" />
+    <button type="submit">Submit</button>
+</form>
+<script>
+document.getElementById('testForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Form submission prevented');
+});
+</script>

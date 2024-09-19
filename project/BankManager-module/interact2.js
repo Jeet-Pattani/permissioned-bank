@@ -20,7 +20,7 @@ if (!API_URL || !PRIVATE_KEY || !CONTRACT_ADDRESS) {
 }
 
 // Provider and Signer setup
-const alchemyProvider = new ethers.providers.JsonRpcProvider('https://polygon-amoy.g.alchemy.com/v2/Ah7O36PfZkIKoL0pjWPmcYxmDvFhPkSH');
+const alchemyProvider = new ethers.JsonRpcProvider('https://polygon-amoy.g.alchemy.com/v2/Ah7O36PfZkIKoL0pjWPmcYxmDvFhPkSH');
 const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
 
 // Contract instance

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interface</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="style.css">
+    <!-- Custom CSS -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner-container">
+          <h1 class="text-center">Permissioned Bank</h1>
+          <div class="text-center mb-4" id="metamaskbtn">
+            <button id="connectButton" class="btn btn-primary"><ion-icon name="cog"></ion-icon> Connect MetaMask</button>
+          </div>
+          <div id="walletInfo" class="text-center mb-4" style="display:none;">
+            <h3>Wallet Information</h3>
+            <p><strong>Address:</strong> <span id="walletAddress"></span></p>
+            <p><strong>Balance:</strong> <span id="walletBalance"></span> POL</p>
+          </div>
+          <div class="text-center mb-4 btn-container-main">
+              <!-- <button id="createNFTButton" class="btn btn-success"><ion-icon name="camera-reverse"></ion-icon> Create NFT</button> -->
+            <button id="depositTokenButton" class="btn btn-success"><ion-icon name="wallet"></ion-icon> Deposit Token</button>
+            <button class="btn btn-warning" id="withdrawAssetButton" data-toggle="modal" data-target="#withdrawalModal"><ion-icon name="cash"></ion-icon> Withdraw Asset</button>
+            <button id="depositNFTButton" class="btn btn-success"><ion-icon name="images"></ion-icon> Deposit NFT</button>
+            <button class="btn btn-info" id="borrowAssetButton" data-toggle="modal" data-target="#borrowalModal"><ion-icon name="card"></ion-icon> Borrow Asset</button>
+          </div>
+        </div>
+      </div>
+
+    <!-- Deposit Token Modal -->
+    <div class="modal fade" id="depositTokenModal" tabindex="-1" role="dialog" aria-labelledby="depositTokenModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositTokenModalLabel">Deposit Token</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tokenContractAddress">Token Contract Address</label>
+                        <input type="text" class="form-control" id="tokenContractAddress"
+                            placeholder="Enter contract address">
+                    </div>
+                    <div class="form-group">
+                        <label for="tokenAmount">Amount</label>
+                        <input type="number" class="form-control" id="tokenAmount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="submitDepositToken" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit NFT Modal -->
+    <div class="modal fade" id="depositNFTModal" tabindex="-1" role="dialog" aria-labelledby="depositNFTModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositNFTModalLabel">Deposit NFT</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" value="">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nftContractAddress">Deposit NFT to the following Address</label>
+                        <input type="text" class="form-control" id="nftContractAddress"
+                            value="0x17a3F2E23F0c832E8C6A874B27Cc950a7F59731F">
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="nftTokenId">Token ID</label>
+                        <input type="text" class="form-control" id="nftTokenId" placeholder="Enter token ID">
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <p>*Cannot validate NFT trnxs via ethers.js</p>
+                    <br>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+                    <!-- <button type="button" id="submitDepositNFT" class="btn btn-primary">Submit</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Asset Modal -->
+    <div class="modal fade" id="withdrawalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Withdrawal Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="withdrawalForm" onsubmit="withdrawalFormSubmit()">
+                        <div class="form-group">
+                            <label for="assetType">Select Asset Type</label>
+                            <select class="form-control" id="assetType" required>
+                                <option value="" disabled selected>Select asset type</option>
+                                <option value="erc20">ERC-20 Token</option>
+                                <option value="nft">NFT</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none" id="erc20Fields">
+                            <label for="erc20TokenAddress">Token Address</label>
+                            <input type="text" class="form-control" id="erc20TokenAddress" placeholder="Enter ERC-20 token address">
+                            <label for="erc20Amount" class="mt-2">Amount</label>
+                            <input type="number" class="form-control" id="erc20Amount" placeholder="Enter amount">
+                            <label for="TrnxHash" class="mt-2">Trnx Hash (Proof of Deposit):</label>
+                            <input type="text" class="form-control" id="TrnxHash" placeholder="Enter Trnx Hash">
+                        </div>
+                        <div class="form-group d-none" id="nftFields">
+                            <label for="nftAddress">NFT Address</label>
+                            <input type="text" class="form-control" id="nftAddress" placeholder="Enter NFT address">
+                            <label for="nftTokenId" class="mt-2">Token ID</label>
+                            <input type="number" class="form-control" id="nftTokenId" placeholder="Enter NFT token ID">
+                            <label for="TrnxHash" class="mt-2">Trnx Hash (Proof of Deposit):</label>
+                            <input type="text" class="form-control" id="TrnxHash" placeholder="Enter Trnx Hash">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Borrow Asset Modal -->
+    <div class="modal fade" id="borrowalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Borrowal Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="borrowalForm">
+                        <div class="form-group">
+                            <label for="assetTypeB">Select Asset Type</label>
+                            <select class="form-control" id="assetTypeB" required>
+                                <option value="" disabled selected>Select asset type</option>
+                                <option value="erc20">ERC-20 Token</option>
+                                <option value="nft">NFT</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none" id="erc20FieldsB">
+                            <label for="erc20TokenAddress">Token Address</label>
+                            <input type="text" class="form-control" id="erc20TokenAddressB" placeholder="Enter ERC-20 token address">
+                            <label for="erc20Amount" class="mt-2">Amount</label>
+                            <input type="number" class="form-control" id="erc20AmountB" placeholder="Enter amount">
+                        </div>
+                        <div class="form-group d-none" id="nftFieldsB">
+                            <label for="nftAddress">NFT Address</label>
+                            <input type="text" class="form-control" id="nftAddressB" placeholder="Enter NFT address">
+                            <label for="nftTokenId" class="mt-2">Token ID</label>
+                            <input type="number" class="form-control" id="nftTokenIdB" placeholder="Enter NFT token ID">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ethers.js and Bootstrap JS -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    <script src="walletconnect.js"></script>
+    <script src="withdraw.js"></script>
+    <script src="borrow.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
