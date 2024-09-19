@@ -10,9 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-let baseUrlAdmin = 'http://localhost:5500/admin-api';
-// let baseUrlAdmin = 'https://brown-tips-kick.loca.lt/';
-
+// let baseUrlAdmin = 'http://localhost:5500/admin-api';
+// let rootUrl = 'https://full-eagles-wave.loca.lt';
+let rootUrl = config.rootUrl;
+let baseUrlAdmin = rootUrl + '/admin-api'
 let userWalletAddress = '';
 const ERC20_ABI = [
     "function transfer(address to, uint256 amount) public returns (bool)"

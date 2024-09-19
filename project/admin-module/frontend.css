@@ -1,0 +1,61 @@
+body {
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  background-color: #1f1f1f; /* Slightly lighter background for container */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+h2, h4 {
+  color: #ff6600; /* Orange color for headers */
+}
+
+.table {
+  color: #e0e0e0; /* Light text color for table */
+}
+
+.table thead th {
+  background-color: #333; /* Darker background for table headers */
+  color: #ff6600; /* Orange color for table header text */
+}
+
+.table tbody tr {
+  background-color: #1f1f1f; /* Darker background for table rows */
+}
+
+.btn-success {
+  background-color: #4caf50; /* Green button background */
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #45a049; /* Slightly darker green on hover */
+}
+
+.btn-danger {
+  background-color: #f44336; /* Red button background */
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #e53935; /* Slightly darker red on hover */
+}
+
+.btn {
+  border-radius: 4px;
+  color: #fff; /* White text color for buttons */
+}
+
+.btn-sm {
+  padding: 5px 10px;
+}
+
+.copy-icon {
+  cursor: pointer;
+  margin-left: 5px;
+}

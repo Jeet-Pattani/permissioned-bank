@@ -9,6 +9,14 @@ app.use('/user-module', express.static(path.join(__dirname, 'user-module')));
 app.use('/admin-module', express.static(path.join(__dirname, 'admin-module')));
 app.use('/BankManager-module', express.static(path.join(__dirname, 'BankManager-module')));
 
+// Serve config.js file
+app.use('/config.js', express.static(path.join(__dirname, 'config.js')));
+
+// Serve main.html at the root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'main.html'));
+});
+
 // Proxy requests to admin-module (port 3000)
 app.use(
   '/admin-api',

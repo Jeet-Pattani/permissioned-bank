@@ -4,59 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BankManager Interaction</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #e0e0e0;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    }
-    h1, h3 {
-      text-align: center;
-      color: #ffffff;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: #b0b0b0;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #444;
-      background: #2a2a2a;
-      color: #e0e0e0;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    .output {
-      margin-top: 20px;
-      padding: 10px;
-      background: #333;
-      border-radius: 5px;
-      color: #e0e0e0;
-    }
-  </style>
+  <link rel="stylesheet" href="frontend.css">
 </head>
 <body>
 
@@ -118,22 +66,7 @@
     <div id="transferNFTOutput" class="output"></div>
 
     <hr>
-    <style>
-      .warning-heading {
-        background-color: #bb0013; /* Red background */
-        color: #ffffff; /* White text */
-        padding: 10px;
-        border-radius: 5px;
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      .warning-message {
-        background-color: #bb0013; /* Red background */
-        color: #ffffff; /* White text */
-        padding: 15px;
-        border-radius: 5px;
-      }
-    </style>
+
     <div class="container mt-4">
       <!-- Warning Heading -->
       <h2 class="warning-heading">Warning!</h2>
@@ -167,118 +100,8 @@
     <button onclick="renounceOwnership()" class="btn btn-danger btn-disabled" data-toggle="modal" data-target="#confirmModal" disabled>Renounce Ownership</button>
     <div id="renounceOutput" class="output"></div>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const renounceButton = document.getElementById('renounceButton');
-      const confirmButton = document.getElementById('confirmButton');
-      const confirmationInput = document.getElementById('confirmationInput');
-      const renounceOutput = document.getElementById('renounceOutput');
-
-      confirmButton.addEventListener('click', function () {
-        if (confirmationInput.value === 'Yes I understand') {
-          renounceButton.classList.remove('btn-disabled');
-          renounceButton.disabled = false;
-          renounceOutput.textContent = 'Button enabled. You can now proceed with renouncing ownership.';
-          $('#confirmModal').modal('hide');
-        } else {
-          renounceOutput.textContent = 'Confirmation text is incorrect. Please type "Yes I understand".';
-        }
-      });
-    });
-
-    function renounceOwnership() {
-      // Your function to handle renouncing ownership
-      console.log('Renounce ownership logic here.');
-    }
-  </script>
-  <script>
-    // Base URL for API calls (adjust it based on where your server is running)
-    const baseURL = 'http://localhost:5500/bm-api';
-    // const baseURL = 'https://huge-times-carry.loca.lt';
-
-    // Function to fetch the owner of the contract
-    async function getOwner() {
-      try {
-        const response = await fetch(`${baseURL}/owner`);
-        const data = await response.json();
-        document.getElementById('ownerOutput').textContent = `Owner Address: ${data.owner}`;
-      } catch (error) {
-        document.getElementById('ownerOutput').textContent = `Error: ${error.message}`;
-      }
-    }
-
-    // Function to transfer ownership of the contract
-    async function transferOwnership() {
-      const newOwner = document.getElementById('newOwner').value;
-      try {
-        const response = await fetch(`${baseURL}/transferOwnership`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ newOwner })
-        });
-        const data = await response.json();
-        document.getElementById('transferOwnershipOutput').textContent = data.message || `Error: ${data.error}`;
-      } catch (error) {
-        document.getElementById('transferOwnershipOutput').textContent = `Error: ${error.message}`;
-      }
-    }
-
-    // Function to withdraw Ether from the contract
-    async function withdrawEther() {
-      const recipient = document.getElementById('recipientEth').value;
-      const amount = document.getElementById('amountEth').value;
-      try {
-        const response = await fetch(`${baseURL}/withdrawEther`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ recipient, amount })
-        });
-        const data = await response.json();
-        document.getElementById('withdrawEthOutput').textContent = data.message || `Error: ${data.error}`;
-      } catch (error) {
-        document.getElementById('withdrawEthOutput').textContent = `Error: ${error.message}`;
-      }
-    }
-
-    // Function to withdraw ERC20 tokens from the contract
-    async function withdrawERC20() {
-      const tokenAddress = document.getElementById('tokenAddress').value;
-      const recipient = document.getElementById('recipientERC20').value;
-      const amount = document.getElementById('amountERC20').value;
-      try {
-        const response = await fetch(`${baseURL}/withdrawERC20`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ tokenAddress, recipient, amount })
-        });
-        const data = await response.json();
-        document.getElementById('withdrawERC20Output').textContent = data.message || `Error: ${data.error}`;
-      } catch (error) {
-        document.getElementById('withdrawERC20Output').textContent = `Error: ${error.message}`;
-      }
-    }
-
-    // Function to renounce ownership of the contract
-    async function renounceOwnership() {
-      console.log("This function is commented as it can break the total working")
-      /*
-      try {
-        const response = await fetch(`${baseURL}/renounceOwnership`, {
-          method: 'POST'
-        });
-        const data = await response.json();
-        document.getElementById('renounceOutput').textContent = data.message || `Error: ${data.error}`;
-      } catch (error) {
-        document.getElementById('renounceOutput').textContent = `Error: ${error.message}`;
-      }*/
-    }
-  </script>
-
+    <!-- Load config.js first -->
+    <script src="../config.js"></script>
+<script src="frontend.js"></script>
 </body>
 </html>

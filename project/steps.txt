@@ -1,0 +1,16 @@
+- go inside admin-module
+- run "node server"
+- go inside BankManager-module
+- run "node interact-endpoints"
+- get in the root folder
+- run "node proxy"
+- open new terminal
+- run "npx localtunnel --port 5500"
+- get the localtunnel url and replace the rootUrl in the following files:
+    - /admin-module/frontend.js
+    - /BankManager-module/frontend.js
+    - /user-module/walletconnect.js
+    - main.html
+
+
+current rootUrl = 'https://full-eagles-wave.loca.lt'

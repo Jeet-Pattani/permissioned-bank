@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Button Links</title>
+    <style>
+        /* General Dark Mode styling */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #E0E0E0; /* Light text color */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Button styling */
+        .button-link {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 15px;
+            background-color: #0b81e8; /* Darker blue */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-link:hover {
+            background-color: #04458f; /* Darker blue on hover */
+        }
+
+        /* Responsive design */
+        #link-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Instructions */
+        #instructions {
+            text-align: center;
+            max-width: 700px;
+            margin: 30px auto;
+            line-height: 1.5;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .button-link {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Explore Dynamic Links</h1>
+    
+    <div id="instructions">
+        <p><strong>Instructions:</strong></p>
+        <p>First, check if the <strong>Owner</strong> and <strong>Withdraw Requests</strong> buttons load correctly. Once they work, feel free to explore the <strong>Admin Module</strong>, <strong>User Module</strong>, and <strong>Bank Manager Module</strong> by clicking their respective buttons.</p>
+        <br>
+        <p><strong>REFRESH PAGE IF GETTING ERROR</strong></p>
+    </div>
+
+    <!-- Buttons will be created dynamically here -->
+    <div id="link-container">
+        <!-- The buttons will be added here by JavaScript -->
+    </div>
+    <!-- Load config.js first -->
+    <script src="config.js"></script>
+    <script>
+        // Define the base URL
+        //const baseUrl = "http://localhost:5500";
+        // let rootUrl = "https://full-eagles-wave.loca.lt";
+        let rootUrl = config.rootUrl;
+        let baseUrl = rootUrl
+        // Create dynamic links
+        function createOwnerLink() {
+            return baseUrl + "/bm-api/owner";
+        }
+
+        function createWithdrawReqsLink() {
+            return baseUrl + "/admin-api/api/get-withdraw-reqs";
+        }
+
+        function createAdminModuleLink() {
+            return baseUrl + "/admin-module/index.html";
+        }
+
+        function createUserModuleLink() {
+            return baseUrl + "/user-module/index.html";
+        }
+
+        function createBankManagerModuleLink() {
+            return baseUrl + "/bankmanager-module/index.html";
+        }
+
+        // Function to create buttons with dynamic links
+        function createButton(text, url) {
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.className = "button-link";
+            anchor.innerText = text;
+            return anchor;
+        }
+
+        // Add buttons to the page
+        const linkContainer = document.getElementById('link-container');
+        linkContainer.appendChild(createButton("Owner", createOwnerLink()));
+        linkContainer.appendChild(createButton("Withdraw Requests", createWithdrawReqsLink()));
+        linkContainer.appendChild(createButton("User Module", createUserModuleLink()));
+        linkContainer.appendChild(createButton("Admin Module", createAdminModuleLink()));
+        linkContainer.appendChild(createButton("Bank Manager Module", createBankManagerModuleLink()));
+
+    </script>
+
+</body>
+</html>
