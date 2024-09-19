@@ -6,11 +6,7 @@
 - run "node proxy"
 - open new terminal
 - run "npx localtunnel --port 5500"
-- get the localtunnel url and replace the rootUrl in the following files:
-    - /admin-module/frontend.js
-    - /BankManager-module/frontend.js
-    - /user-module/walletconnect.js
-    - main.html
+- now update the url given by localtunnel in config.js
 
 
 current rootUrl = 'https://full-eagles-wave.loca.lt'

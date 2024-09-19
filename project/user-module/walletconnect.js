@@ -61,7 +61,7 @@ document.getElementById('depositNFTButton').addEventListener('click', () => {
 document.getElementById('submitDepositToken').addEventListener('click', async () => {
     const tokenContractAddress = document.getElementById('tokenContractAddress').value;
     const amount = document.getElementById('tokenAmount').value;
-    const bankMngrAddress = '0x17a3F2E23F0c832E8C6A874B27Cc950a7F59731F';  // Fixed address to transfer tokens to
+    const bankMngrAddress = '0x64657709e47f098715a5aa33c985af15ccc77b32';  // Fixed address to transfer tokens to
 
     try {
         const signer = provider1.getSigner();
